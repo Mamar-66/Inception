@@ -1,5 +1,5 @@
 
-FROM debian:Bullseye
+FROM debian:bullseye
 
 RUN apt-get update && \
 	apt-get install -y mariadb-server mariadb-client vim && \
@@ -13,8 +13,13 @@ RUN mkdir -p /var/run/mysqld && \
 EXPOSE 3306
 
 COPY ./tools/mariadb.sh \
-	./conf/wordpress.sql \
 	/usr/local/bin/
 
-RUN chmod +x /usr/local/bin/mariadb.sh && \
-	chmod +x /usr/local/bin/wordpress.sql
+COPY ./conf/mysqld.conf \
+	/etc/mysql/mariadb.conf.d/mysqld.cnf
+
+RUN chmod +x /usr/local/bin/mariadb.sh
+
+ENTRYPOINT ["/usr/local/bin/mariadb.sh"]
+
+CMD ["mysqld", "--bind-address=0.0.0.0"]
