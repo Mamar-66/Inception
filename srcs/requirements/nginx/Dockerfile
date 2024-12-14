@@ -1,5 +1,5 @@
 
-FROM debian:Bullseye
+FROM debian:bullseye
 
 RUN apt-get update && \
 	apt-get install -y nginx openssl && \
@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
 	-out		/etc/nginx/ssl/publicCertificat.crt \
-	-subj 		"/C=FR/ST=Occitanie/L=Perpignant/O=42 School/OU=omfelk/CN=domaine.com" \
+	-subj 		"/C=FR/ST=Occitanie/L=Perpignan/O=42 School/OU=omfelk/CN=domaine.com" \
 	-keyout		/etc/nginx/ssl/privatKey.key
 
 COPY ./conf/nginx.conf /etc/nginx/conf.d
