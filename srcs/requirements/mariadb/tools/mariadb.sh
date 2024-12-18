@@ -1,10 +1,16 @@
 #!/bin/sh
 
+
 # Initialisation de la base de données
-mysqld --initialize --user=mysql --datadir=/var/lib/mysql
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    echo "Initializing MariaDB data directory..."
+    mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
+fi
 
 # Démarrage explicite de MariaDB
-mysqld --user=mysql --datadir=/var/lib/mysql
+mysqld --user=mysql --datadir=/var/lib/mysql &
+pid=$! 
+sleep 3
 
 # Vérification de l'existence de la base de données
 if ! mysql -uroot -e "USE $MYSQL_DATABASE;" 2>/dev/null; then
@@ -31,4 +37,7 @@ else
     echo "DATABASE already exists. Skipping creation."
 fi
 
-exec "$@"
+kill $pid
+sleep 3
+
+exec mysqld --user=mysql --datadir=/var/lib/mysql

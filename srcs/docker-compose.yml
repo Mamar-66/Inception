@@ -17,8 +17,6 @@ services:
       - mariadb
     build: ./requirements/wordpress
     restart: always
-    #ports:
-    #  - "9000:9000"
     env_file:
       - .env
     volumes:

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sleep 8
+
 if [ -f ./wp-config.php ] && grep -q "username_here" wp-config.php; then
     echo "wordpress ok"
 else
@@ -24,7 +26,28 @@ else
     cp wp-config-sample.php wp-config.php
 fi
 
-# Afficher la version de PHP pour vérifier si PHP fonctionne correctement
+if ! wp core is-installed --allow-root --path='/var/www/html'; then
+    echo "Création du site.."
+    wp core install --allow-root \
+        --url=${DOMAIN_NAME} \
+        --title=42-inception \
+        --admin_user=${MYSQL_USER} \
+        --admin_password=${MYSQL_ROOT_PASSWORD} \
+        --admin_email=omar_felk@hotmail.fr \
+        --skip-email \
+        --path='/var/www/html'
+
+    echo "Création du user.."
+    wp user create --allow-root \
+        ${MYSQL_USER} \
+        omar_felk@hotmail.fr \
+        --user_pass=${MYSQL_PASSWORD} \
+        --role="editor" \
+        --display_name=Rafael \
+        --porcelain \
+        --path='/var/www/html'
+fi
+
 echo "PHP version:"
 php -v
 

@@ -9,10 +9,10 @@ re:
 	@make all
 
 clean:
-	@docker stop $$(docker ps -aq); \
-	docker rm $$(docker ps -aq); \
-	docker rmi -f $$(docker images -aq); \
-	docker volume rm $$(docker volume ls -q); \
-	docker network rm $$(docker network ls -q);
+	@docker ps -aq | xargs -r docker stop; \
+	docker ps -aq | xargs -r docker rm; \
+	docker images -aq | xargs -r docker rmi -f; \
+	docker volume ls -q | xargs -r docker volume rm; \
+	docker network ls --filter type=custom -q | xargs -r docker network rm
 
 .PHONY: all down re clean
