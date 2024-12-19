@@ -31,7 +31,7 @@ if ! wp core is-installed --allow-root --path='/var/www/html'; then
     wp core install --allow-root \
         --url=${DOMAIN_NAME} \
         --title=42-inception \
-        --admin_user=${MYSQL_USER} \
+        --admin_user=${ADMIN_USER} \
         --admin_password=${MYSQL_ROOT_PASSWORD} \
         --admin_email=omar_felk@hotmail.fr \
         --skip-email \
@@ -40,10 +40,10 @@ if ! wp core is-installed --allow-root --path='/var/www/html'; then
     echo "Création du user.."
     wp user create --allow-root \
         ${MYSQL_USER} \
-        omar_felk@hotmail.fr \
+        useromar_felk@hotmail.fr \
         --user_pass=${MYSQL_PASSWORD} \
         --role="editor" \
-        --display_name=Rafael \
+        --display_name=omar \
         --porcelain \
         --path='/var/www/html'
 fi
